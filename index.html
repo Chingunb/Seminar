@@ -1,63 +1,88 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Steam Sale Countdown</title>
+
+  <!-- Digital HUD Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
   <style>
     body {
+      margin: 0;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background: #0f172a;
-      color: #f8fafc;
-      font-family: Arial, sans-serif;
+      background: #05080f;
+      color: #00f6ff;
+      font-family: 'Orbitron', sans-serif;
       text-align: center;
+      overflow: hidden;
     }
-    .countdown {
-      background: #1e293b;
-      padding: 2rem;
-      border-radius: 1rem;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+
+    .hud {
+      padding: 2rem 3rem;
+      border: 2px solid #00f6ff;
+      border-radius: 12px;
+      box-shadow: 0 0 25px rgba(0, 246, 255, 0.8),
+                  inset 0 0 20px rgba(0, 246, 255, 0.4);
+      backdrop-filter: blur(6px);
+      animation: glowPulse 2s infinite alternate;
     }
+
+    @keyframes glowPulse {
+      from { box-shadow: 0 0 10px #00f6ff; }
+      to { box-shadow: 0 0 35px #00f6ff; }
+    }
+
     h1 {
+      margin-bottom: 1.5rem;
       font-size: 2rem;
-      margin-bottom: 1rem;
+      text-shadow: 0 0 12px #00f6ff;
     }
+
     #timer {
-      font-size: 2.5rem;
+      font-size: 3rem;
       font-weight: bold;
+      letter-spacing: 2px;
+      text-shadow: 0 0 12px #00f6ff;
+    }
+
+    p {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      opacity: 0.7;
     }
   </style>
 </head>
 <body>
-  <div class="countdown">
-    <h1>Steam Sale Ends In</h1>
+  <div class="hud">
+    <h1>🔻 SALE ENDS IN 🔻</h1>
     <div id="timer"></div>
-    <p>Deadline: 01:00 AM, Sept 17, 2025 (UB Time)</p>
+    <p>Deadline: 01:00 AM • Sept 17, 2025 • UB Time</p>
   </div>
 
   <script>
-    // Sale end in UB time: Sept 17, 2025 01:00 AM
     const saleEnd = new Date('2025-09-17T01:00:00+08:00').getTime();
 
     function updateTimer() {
-      const now = new Date().getTime();
+      const now = Date.now();
       const distance = saleEnd - now;
 
       if (distance <= 0) {
-        document.getElementById('timer').innerHTML = "Expired";
+        document.getElementById('timer').innerHTML = "EXPIRED";
         return;
       }
 
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((distance % (1000 * 60)) / 1000);
 
       document.getElementById('timer').innerHTML =
-        `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        `${d}D ${h}H ${m}M ${s}S`;
     }
 
     setInterval(updateTimer, 1000);
